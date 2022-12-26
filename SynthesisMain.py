@@ -1,9 +1,10 @@
+from AstMakers import Type
 from Enumerator import Enumerator
 from ast import unparse
 
 def synthesize(contexts:list[dict],outputs):
-    vars = list(contexts[0].keys())
-    enumerator = Enumerator([0, 1, 2], vars, contexts)
+    vars = {k: Type.INT if type(v) == int else Type.STRING if type(v) == str else Type.INTLIST if type(v) == list and len(v) > 0 and type(v[0]) == int else Type.STRINGLIST for (k,v) in contexts[0].items()}
+    enumerator = Enumerator([(0,Type.INT), (1,Type.INT), (2,Type.INT)], vars, contexts)
     for p in enumerator:
         if p.values == outputs:
             print(unparse(p))
